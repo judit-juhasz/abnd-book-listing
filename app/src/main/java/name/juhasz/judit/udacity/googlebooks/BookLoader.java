@@ -3,10 +3,12 @@ package name.juhasz.judit.udacity.googlebooks;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookLoader extends AsyncTaskLoader<List<Book>> {
+
+    private static final String QUERY_URL =
+            "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=10";
 
     public BookLoader(Context context) {
         super(context);
@@ -19,18 +21,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
     @Override
     public List<Book> loadInBackground() {
-        return getDummyData();
-    }
-
-    // Dummy Data, do not need to use strings.xml
-    private List<Book> getDummyData() {
-        ArrayList<String> authors = new ArrayList<>();
-        authors.add("Judit Juhasz");
-
-        ArrayList<Book> books = new ArrayList<>();
-        books.add(new Book("Android by Example", authors));
-        books.add(new Book("Android, the best part", authors));
-
+        List<Book> books = QueryUtils.fetchBookData(QUERY_URL);
         return books;
     }
 }
