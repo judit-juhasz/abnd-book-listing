@@ -6,12 +6,29 @@
     tools:context="name.juhasz.judit.udacity.googlebooks.MainActivity"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/b_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_button"
-        android:onClick="onClickSearch"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_search_term"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_term_hint"
+            android:maxLines="1"
+            android:lines="1"
+            android:inputType="text"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/b_search"/>
+
+        <ImageButton
+            android:id="@id/b_search"
+            android:src="@drawable/ic_search_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickSearch"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_search_result"
