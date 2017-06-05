@@ -7,11 +7,11 @@ import java.util.List;
 
 public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
-    private static final String QUERY_URL =
-            "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=10";
+    private String mSearchTerm;
 
-    public BookLoader(Context context) {
+    public BookLoader(Context context, String searchTerm) {
         super(context);
+        mSearchTerm = searchTerm;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
     @Override
     public List<Book> loadInBackground() {
-        List<Book> books = QueryUtils.fetchBookData(QUERY_URL);
+        List<Book> books = QueryUtils.fetchBookData(getContext(), mSearchTerm);
         return books;
     }
 }

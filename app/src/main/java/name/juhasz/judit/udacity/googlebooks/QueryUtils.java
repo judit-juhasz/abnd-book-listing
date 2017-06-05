@@ -1,5 +1,6 @@
 package name.juhasz.judit.udacity.googlebooks;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,9 +12,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +31,13 @@ public final class QueryUtils {
     private static final String JSON_KEY_BOOK_TITLE = "title";
     private static final String JSON_KEY_BOOK_AUTHORS = "authors";
 
+    private static final String URL_ENCODING = "utf-8";
+
     private QueryUtils() {
     }
 
-    public static List<Book> fetchBookData(String requestUrl) {
+    public static List<Book> fetchBookData(Context context, String searchTerm) {
+        String requestUrl = buildUrlFromSearchTerm(context, searchTerm);
         URL url = createUrl(requestUrl);
 
         String jsonResponse = null;
@@ -44,6 +50,19 @@ public final class QueryUtils {
         List<Book> books = extractFeatureFromJson(jsonResponse);
 
         return books;
+    }
+
+    private static String buildUrlFromSearchTerm(Context context, String searchTerm) {
+        String builtUrl = null;
+
+        try {
+            String encodedSearchTerm = URLEncoder.encode(searchTerm, URL_ENCODING);
+            builtUrl = context.getString(R.string.query_url_template, encodedSearchTerm);
+        } catch (UnsupportedEncodingException e) {
+            Log.e(LOG_TAG, "Error with building URL from search term ", e);
+        }
+
+        return builtUrl;
     }
 
     private static URL createUrl(String stringUrl) {

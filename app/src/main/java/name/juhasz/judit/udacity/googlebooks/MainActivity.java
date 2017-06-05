@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void onClickSearch(View view) {
         LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(BOOKS_LOADER_ID, null, this);
+        loaderManager.restartLoader(BOOKS_LOADER_ID, null, this);
     }
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        return new BookLoader(this);
+        return new BookLoader(this, "ios swift");
     }
 
     @Override
