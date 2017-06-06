@@ -8,6 +8,8 @@
 
     <RelativeLayout
         android:id="@+id/rl_search_bar"
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingRight="@dimen/activity_horizontal_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
