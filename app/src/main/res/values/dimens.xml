@@ -4,5 +4,4 @@
     <dimen name="list_view_divider_height">0dp</dimen>
     <dimen name="list_item_margin">8dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
-
 </resources>
