@@ -53,14 +53,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void showMessage(String message) {
         mLoadingIndicator.setVisibility(View.GONE);
         mBookListView.setVisibility(View.GONE);
+        mSearchBar.setVisibility(View.VISIBLE);
 
         mMessageDisplayTextView.setText(message);
         mMessageDisplayTextView.setVisibility(View.VISIBLE);
     }
 
     private void showFullScreenMessage(String message) {
-        mSearchBar.setVisibility(View.GONE);
         showMessage(message);
+        mSearchBar.setVisibility(View.GONE);
     }
 
     private void showProgressBar() {
