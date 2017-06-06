@@ -21,7 +21,10 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
     @Override
     public List<Book> loadInBackground() {
-        List<Book> books = QueryUtils.fetchBookData(getContext(), mSearchTerm);
+        List<Book> books = null;
+        if (null != mSearchTerm && !mSearchTerm.isEmpty()) {
+            books = QueryUtils.fetchBookData(getContext(), mSearchTerm);
+        }
         return books;
     }
 }

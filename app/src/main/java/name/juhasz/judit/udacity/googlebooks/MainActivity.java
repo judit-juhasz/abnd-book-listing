@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.data;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     private static final int BOOKS_LOADER_ID = 1;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(BOOKS_LOADER_ID, null, this);
 
         if (networkInfo == null || !networkInfo.isConnected()) {
             showFullScreenMessage(getString(R.string.error_no_internet));
@@ -102,7 +107,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        String searchTerm = args.getString(SEARCH_TERM_KEY);
+        String searchTerm = null;
+        if (null != args) {
+            searchTerm = args.getString(SEARCH_TERM_KEY, null);
+        }
         return new BookLoader(this, searchTerm);
     }
 
