@@ -30,8 +30,16 @@
             android:layout_alignParentRight="true" />
     </RelativeLayout>
 
+    <ListView
+        android:id="@+id/lv_books"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="@dimen/list_view_divider_height" />
+
     <TextView
-        android:id="@+id/tv_search_result"
+        android:id="@+id/tv_message_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/search_result_description" />

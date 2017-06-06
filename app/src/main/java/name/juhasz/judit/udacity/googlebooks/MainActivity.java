@@ -6,46 +6,65 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     private static final int BOOKS_LOADER_ID = 1;
-    
+
     private static final String SEARCH_TERM_KEY = "Search Term";
 
     private EditText mSearchTermEditText;
-    private TextView mSearchResultTextView;
-    private View mLoadingIndicator;
+    private TextView mMessageDisplayTextView;
+    private ProgressBar mLoadingIndicator;
+    private ListView mBookListView;
+
+    private BookAdapter mBookAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mSearchTermEditText = (EditText) findViewById(R.id.et_search_term);
-        mLoadingIndicator = findViewById(R.id.loading_indicator);
-        mSearchResultTextView = (TextView) findViewById(R.id.tv_search_result);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+        mMessageDisplayTextView = (TextView) findViewById(R.id.tv_message_display);
+
+        mBookListView = (ListView) findViewById(R.id.lv_books);
+        mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
+        mBookListView.setAdapter(mBookAdapter);
+
+        showMessage(getString(R.string.error_no_books));
+    }
+
+    private void showMessage(String message) {
+        mLoadingIndicator.setVisibility(View.GONE);
+        mBookListView.setVisibility(View.GONE);
+
+        mMessageDisplayTextView.setText(message);
+        mMessageDisplayTextView.setVisibility(View.VISIBLE);
     }
 
     private void showProgressBar() {
+        mMessageDisplayTextView.setVisibility(View.GONE);
+        mBookListView.setVisibility(View.GONE);
+
         mLoadingIndicator.setVisibility(View.VISIBLE);
-        mSearchResultTextView.setVisibility(View.GONE);
     }
 
     private void showBooks(List<Book> books) {
         mLoadingIndicator.setVisibility(View.GONE);
+        mMessageDisplayTextView.setVisibility(View.GONE);
 
-        String result = "";
-        for (Book book : books) {
-            result = result + book.getTitle() + "\n";
-        }
-
-        mSearchResultTextView.setText(result);
-
-        mSearchResultTextView.setVisibility(View.VISIBLE);
+        mBookAdapter.clear();
+        mBookAdapter.addAll(books);
+        mBookListView.setVisibility(View.VISIBLE);
     }
 
     public void onClickSearch(View view) {
@@ -69,11 +88,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> data) {
-        showBooks(data);
+        if (null == data || data.isEmpty()) {
+            showMessage(getString(R.string.error_no_books));
+        } else {
+            showBooks(data);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Book>> loader) {
-
+        showMessage(getString(R.string.error_no_books));
     }
 }
