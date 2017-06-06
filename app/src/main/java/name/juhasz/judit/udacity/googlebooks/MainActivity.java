@@ -14,20 +14,44 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     private static final int BOOKS_LOADER_ID = 1;
+    
     private static final String SEARCH_TERM_KEY = "Search Term";
 
     private EditText mSearchTermEditText;
+    private TextView mSearchResultTextView;
+    private View mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSearchTermEditText = (EditText) findViewById(R.id.et_search_term);
+        mLoadingIndicator = findViewById(R.id.loading_indicator);
+        mSearchResultTextView = (TextView) findViewById(R.id.tv_search_result);
+    }
+
+    private void showProgressBar() {
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        mSearchResultTextView.setVisibility(View.GONE);
+    }
+
+    private void showBooks(List<Book> books) {
+        mLoadingIndicator.setVisibility(View.GONE);
+
+        String result = "";
+        for (Book book : books) {
+            result = result + book.getTitle() + "\n";
+        }
+
+        mSearchResultTextView.setText(result);
+
+        mSearchResultTextView.setVisibility(View.VISIBLE);
     }
 
     public void onClickSearch(View view) {
         String searchTerm = mSearchTermEditText.getText().toString().trim();
         if (!searchTerm.isEmpty()) {
+            showProgressBar();
             Bundle bundle = new Bundle();
             bundle.putString(SEARCH_TERM_KEY, searchTerm);
             LoaderManager loaderManager = getLoaderManager();
@@ -45,14 +69,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> data) {
-        TextView searchResultTextView = (TextView) findViewById(R.id.tv_search_result);
-
-        String books = "";
-        for (Book book : data) {
-            books = books + book.getTitle() + "\n";
-        }
-
-        searchResultTextView.setText(books);
+        showBooks(data);
     }
 
     @Override
