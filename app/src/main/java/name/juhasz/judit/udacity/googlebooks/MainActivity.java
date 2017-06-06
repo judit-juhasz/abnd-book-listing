@@ -46,17 +46,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
         mBookListView.setAdapter(mBookAdapter);
 
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(BOOKS_LOADER_ID, null, this);
-
-        if (networkInfo == null || !networkInfo.isConnected()) {
-            showFullScreenMessage(getString(R.string.error_no_internet));
-        } else {
-            showMessage(getString(R.string.error_no_books));
-        }
     }
 
     private void showMessage(String message) {
@@ -114,10 +105,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> data) {
-        if (null == data || data.isEmpty()) {
-            showMessage(getString(R.string.error_no_books));
-        } else {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        boolean networkAvailable = (networkInfo != null && networkInfo.isConnected());
+        boolean booksAvailable = (null != data && !data.isEmpty());
+
+        if (networkAvailable && booksAvailable) {
             showBooks(data);
+        } else if (!networkAvailable) {
+            showFullScreenMessage(getString(R.string.error_no_internet));
+        } else {
+            showMessage(getString(R.string.error_no_books));
         }
     }
 
