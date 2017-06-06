@@ -11,12 +11,17 @@
         android:id="@+id/tv_title_of_book"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Title"/>
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textStyle="bold"
+        tools:text="Title"
+        android:layout_marginTop="@dimen/list_item_margin"/>
 
     <TextView
         android:id="@+id/tv_authors_of_book"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Authors"/>
+        android:textAppearance="?android:textAppearanceSmall"
+        tools:text="Authors"
+        android:layout_marginBottom="@dimen/list_item_margin"/>
 
 </LinearLayout>

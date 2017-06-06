@@ -10,6 +10,7 @@
         android:id="@+id/rl_search_bar"
         android:paddingLeft="@dimen/activity_horizontal_padding"
         android:paddingRight="@dimen/activity_horizontal_padding"
+        android:paddingTop="@dimen/padding_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -31,28 +32,38 @@
             android:layout_height="wrap_content"
             android:onClick="onClickSearch"
             android:layout_alignParentRight="true" />
+
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_books"
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:dividerHeight="@dimen/list_view_divider_height" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_message_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@string/search_result_description" />
+        <ListView
+            android:id="@+id/lv_books"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="@dimen/list_view_divider_height" />
 
-    <ProgressBar
-        android:id="@+id/loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_message_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_centerInParent="true"
+            tools:text="@string/search_result_description"
+            android:gravity="center_horizontal"/>
+
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
