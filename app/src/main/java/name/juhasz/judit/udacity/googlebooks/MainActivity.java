@@ -1,13 +1,17 @@
 package name.juhasz.judit.udacity.googlebooks;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mMessageDisplayTextView;
     private ProgressBar mLoadingIndicator;
     private ListView mBookListView;
+    private RelativeLayout mSearchBar;
 
     private BookAdapter mBookAdapter;
 
@@ -35,12 +40,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mSearchTermEditText = (EditText) findViewById(R.id.et_search_term);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
         mMessageDisplayTextView = (TextView) findViewById(R.id.tv_message_display);
+        mSearchBar = (RelativeLayout) findViewById(R.id.rl_search_bar);
 
         mBookListView = (ListView) findViewById(R.id.lv_books);
         mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
         mBookListView.setAdapter(mBookAdapter);
 
-        showMessage(getString(R.string.error_no_books));
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            showFullScreenMessage(getString(R.string.error_no_internet));
+        } else {
+            showMessage(getString(R.string.error_no_books));
+        }
     }
 
     private void showMessage(String message) {
@@ -51,7 +64,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mMessageDisplayTextView.setVisibility(View.VISIBLE);
     }
 
+    private void showFullScreenMessage(String message) {
+        mSearchBar.setVisibility(View.GONE);
+        showMessage(message);
+    }
+
     private void showProgressBar() {
+        mSearchBar.setVisibility(View.VISIBLE);
         mMessageDisplayTextView.setVisibility(View.GONE);
         mBookListView.setVisibility(View.GONE);
 
@@ -59,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void showBooks(List<Book> books) {
+        mSearchBar.setVisibility(View.VISIBLE);
         mLoadingIndicator.setVisibility(View.GONE);
         mMessageDisplayTextView.setVisibility(View.GONE);
 
