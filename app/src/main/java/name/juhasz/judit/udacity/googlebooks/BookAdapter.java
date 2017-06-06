@@ -1,6 +1,7 @@
 package name.juhasz.judit.udacity.googlebooks;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class BookAdapter extends ArrayAdapter<Book> {
 
+    private static final String AUTHOR_SEPARATOR = ", ";
     public BookAdapter(Context context, ArrayList<Book> books) {
         super(context, 0, books);
     }
@@ -30,7 +32,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         bookTitleTextView.setText(currentBook.getTitle());
 
         TextView bookAuthorsTextView = (TextView) listItemView.findViewById(R.id.tv_authors_of_book);
-        bookAuthorsTextView.setText(currentBook.getAuthors().toString());
+        bookAuthorsTextView.setText(TextUtils.join(AUTHOR_SEPARATOR, currentBook.getAuthors()));
 
         return listItemView;
     }
