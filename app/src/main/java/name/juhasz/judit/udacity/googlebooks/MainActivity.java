@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.data;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     private static final int BOOKS_LOADER_ID = 1;
@@ -43,8 +45,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
         mBookListView.setAdapter(mBookAdapter);
 
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(BOOKS_LOADER_ID, null, this);
+        if (isNetworkAvailable()) {
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(BOOKS_LOADER_ID, null, this);
+        } else {
+            showMessage(getString(R.string.error_no_internet));
+        }
     }
 
     private void showMessage(String message) {
@@ -73,12 +79,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void onClickSearch(View view) {
         String searchTerm = mSearchTermEditText.getText().toString().trim();
-        if (!searchTerm.isEmpty()) {
+        boolean searchTermAvailable = null != searchTerm && !searchTerm.isEmpty();
+        boolean networkAvailable = isNetworkAvailable();
+
+        if (networkAvailable && searchTermAvailable) {
             showProgressBar();
             Bundle bundle = new Bundle();
             bundle.putString(SEARCH_TERM_KEY, searchTerm);
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.restartLoader(BOOKS_LOADER_ID, bundle, this);
+        } else if (!networkAvailable) {
+            showMessage(getString(R.string.error_no_internet));
         } else {
             Toast.makeText(this, R.string.error_enter_search_term, Toast.LENGTH_LONG).show();
         }
@@ -95,17 +106,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> data) {
-        ConnectivityManager connMgr =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        boolean networkAvailable = (networkInfo != null && networkInfo.isConnected());
         boolean booksAvailable = (null != data && !data.isEmpty());
 
-        if (networkAvailable && booksAvailable) {
+        if (booksAvailable) {
             showBooks(data);
-        } else if (!networkAvailable) {
-            showMessage(getString(R.string.error_no_internet));
         } else {
             showMessage(getString(R.string.error_no_books));
         }
@@ -114,5 +118,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<List<Book>> loader) {
         showMessage(getString(R.string.error_no_books));
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
     }
 }
