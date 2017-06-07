@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingLeft="@dimen/activity_horizontal_padding"
     android:paddingRight="@dimen/activity_horizontal_padding"
+    android:paddingTop="@dimen/list_item_margin"
+    android:paddingBottom="@dimen/list_item_margin"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_title_of_book"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/iv_book_cover"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textStyle="bold"
-        tools:text="Title"
-        android:layout_marginTop="@dimen/list_item_margin"/>
+        android:adjustViewBounds="true"
+        android:paddingRight="@dimen/list_item_inner_divider_width"
+        android:layout_weight="1"/>
 
-    <TextView
-        android:id="@+id/tv_authors_of_book"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:textAppearanceSmall"
-        tools:text="Authors"
-        android:layout_marginBottom="@dimen/list_item_margin"/>
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title_of_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textStyle="bold"
+            tools:text="Title"/>
+
+        <TextView
+            android:id="@+id/tv_authors_of_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            tools:text="Authors"/>
+
+    </LinearLayout>
 
 </LinearLayout>
