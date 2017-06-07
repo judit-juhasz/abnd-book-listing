@@ -6,4 +6,4 @@ The Book Listing App (Project 7) for Udacity's Android Basics Nanodegree by Goog
 
 ### Pictures
 
-![Demo screeens](https://c1.staticflickr.com/5/4279/34758157270_13f349631a_o.png)
+![Demo screeens](https://c1.staticflickr.com/5/4221/35116876116_ab42d30832_o.png)
