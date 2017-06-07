@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mMessageDisplayTextView;
     private ProgressBar mLoadingIndicator;
     private ListView mBookListView;
-    private RelativeLayout mSearchBar;
 
     private BookAdapter mBookAdapter;
 
@@ -40,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mSearchTermEditText = (EditText) findViewById(R.id.et_search_term);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
         mMessageDisplayTextView = (TextView) findViewById(R.id.tv_message_display);
-        mSearchBar = (RelativeLayout) findViewById(R.id.rl_search_bar);
 
         mBookListView = (ListView) findViewById(R.id.lv_books);
         mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
@@ -53,19 +50,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void showMessage(String message) {
         mLoadingIndicator.setVisibility(View.GONE);
         mBookListView.setVisibility(View.GONE);
-        mSearchBar.setVisibility(View.VISIBLE);
 
         mMessageDisplayTextView.setText(message);
         mMessageDisplayTextView.setVisibility(View.VISIBLE);
     }
 
-    private void showFullScreenMessage(String message) {
-        showMessage(message);
-        mSearchBar.setVisibility(View.GONE);
-    }
-
     private void showProgressBar() {
-        mSearchBar.setVisibility(View.VISIBLE);
         mMessageDisplayTextView.setVisibility(View.GONE);
         mBookListView.setVisibility(View.GONE);
 
@@ -73,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void showBooks(List<Book> books) {
-        mSearchBar.setVisibility(View.VISIBLE);
         mLoadingIndicator.setVisibility(View.GONE);
         mMessageDisplayTextView.setVisibility(View.GONE);
 
@@ -116,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (networkAvailable && booksAvailable) {
             showBooks(data);
         } else if (!networkAvailable) {
-            showFullScreenMessage(getString(R.string.error_no_internet));
+            showMessage(getString(R.string.error_no_internet));
         } else {
             showMessage(getString(R.string.error_no_books));
         }
