@@ -5,5 +5,7 @@
     <string name="error_enter_search_term">Enter a search term first.</string>
     <string name="error_no_books">No books to show.\nEnter a new search term\nand press the search icon.</string>
     <string name="error_no_internet">No internet connection.</string>
+    <string name="unknown_title">Title N/A</string>
+    <string name="unknown_author">Author N/A</string>
     <string name="query_url_template">https://www.googleapis.com/books/v1/volumes?q=<xliff:g example="android" id="search_term">%s</xliff:g>&amp;maxResults=25</string>
 </resources>

@@ -47,7 +47,7 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        List<Book> books = extractFeatureFromJson(jsonResponse);
+        List<Book> books = extractFeatureFromJson(context, jsonResponse);
 
         return books;
     }
@@ -130,7 +130,7 @@ public final class QueryUtils {
         return output.toString();
     }
 
-    private static List<Book> extractFeatureFromJson(String bookJSON) {
+    private static List<Book> extractFeatureFromJson(Context context, String bookJSON) {
         if (TextUtils.isEmpty(bookJSON)) {
             return null;
         }
@@ -139,19 +139,16 @@ public final class QueryUtils {
 
         try {
             JSONObject baseJsonResponse = new JSONObject(bookJSON);
-            JSONArray bookArray = baseJsonResponse.getJSONArray(JSON_KEY_BOOKS);
+            JSONArray bookArray = baseJsonResponse.optJSONArray(JSON_KEY_BOOKS);
 
-            for (int i = 0; i < bookArray.length(); i++) {
+            for (int i = 0; null != bookArray && i < bookArray.length(); i++) {
                 JSONObject currentBook = bookArray.getJSONObject(i);
                 JSONObject volumeInfo = currentBook.getJSONObject(JSON_KEY_BOOK_INFO);
-                String title = volumeInfo.getString(JSON_KEY_BOOK_TITLE);
+                String title = volumeInfo.optString(JSON_KEY_BOOK_TITLE,
+                        context.getString(R.string.unknown_title));
 
-                ArrayList<String> authors = new ArrayList<>();
-
-                JSONArray authorArray = volumeInfo.getJSONArray(JSON_KEY_BOOK_AUTHORS);
-                for (int j = 0; j < authorArray.length(); j++) {
-                    authors.add(authorArray.getString(j));
-                }
+                JSONArray authorArray = volumeInfo.optJSONArray(JSON_KEY_BOOK_AUTHORS);
+                ArrayList<String> authors = extractAuthorsFromJsonArray(context, authorArray);
 
                 Book book = new Book(title, authors);
                 books.add(book);
@@ -161,5 +158,26 @@ public final class QueryUtils {
         }
 
         return books;
+    }
+
+    private static ArrayList<String> extractAuthorsFromJsonArray(Context context,
+                                                                 JSONArray authorArray) {
+        String unknownAuthor = context.getString(R.string.unknown_author);
+
+        ArrayList<String> authors = new ArrayList<>();
+
+        if (null != authorArray && authorArray.length() != 0) {
+            for (int i = 0; i < authorArray.length(); i++) {
+                try {
+                    authors.add(authorArray.getString(i));
+                } catch (JSONException e) {
+                    authors.add(unknownAuthor);
+                }
+            }
+        } else {
+            authors.add(unknownAuthor);
+        }
+
+        return authors;
     }
 }
