@@ -17,16 +17,26 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     private static final int BOOKS_LOADER_ID = 1;
 
     private static final String SEARCH_TERM_KEY = "Search Term";
 
-    private EditText mSearchTermEditText;
-    private TextView mMessageDisplayTextView;
-    private ProgressBar mLoadingIndicator;
-    private ListView mBookListView;
+    @BindView(R.id.et_search_term)
+    public EditText mSearchTermEditText;
+
+    @BindView(R.id.tv_message_display)
+    public TextView mMessageDisplayTextView;
+
+    @BindView(R.id.loading_indicator)
+    public ProgressBar mLoadingIndicator;
+
+    @BindView(R.id.lv_books)
+    public ListView mBookListView;
 
     private BookAdapter mBookAdapter;
 
@@ -35,11 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSearchTermEditText = (EditText) findViewById(R.id.et_search_term);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
-        mMessageDisplayTextView = (TextView) findViewById(R.id.tv_message_display);
+        ButterKnife.bind(this);
 
-        mBookListView = (ListView) findViewById(R.id.lv_books);
         mBookAdapter = new BookAdapter(this, new ArrayList<Book>());
         mBookListView.setAdapter(mBookAdapter);
 
