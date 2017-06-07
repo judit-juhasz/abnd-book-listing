@@ -17,8 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.data;
-
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
     private static final int BOOKS_LOADER_ID = 1;
