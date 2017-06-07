@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Google Books</string>
+    <string name="app_name" translatable="false">Google Books</string>
     <string name="search_result_description">Search result</string>
     <string name="search_term_hint">Enter a search term</string>
     <string name="error_enter_search_term">Enter a search term first.</string>
@@ -7,5 +7,5 @@
     <string name="error_no_internet">No internet connection.</string>
     <string name="unknown_title">Title N/A</string>
     <string name="unknown_author">Author N/A</string>
-    <string name="query_url_template">https://www.googleapis.com/books/v1/volumes?q=<xliff:g example="android" id="search_term">%s</xliff:g>&amp;maxResults=25</string>
+    <string name="query_url_template" translatable="false">https://www.googleapis.com/books/v1/volumes?q=<xliff:g example="android" id="search_term">%s</xliff:g>&amp;maxResults=25</string>
 </resources>
