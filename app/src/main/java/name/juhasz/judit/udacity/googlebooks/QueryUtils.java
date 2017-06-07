@@ -156,7 +156,7 @@ public final class QueryUtils {
                 if (null != bookImages) {
                     coverImagePath = bookImages.optString(JSON_KEY_BOOK_THUMBNAIL_PATH);
                 }
-                
+
                 Book book = new Book(title, authors, coverImagePath);
                 books.add(book);
             }
