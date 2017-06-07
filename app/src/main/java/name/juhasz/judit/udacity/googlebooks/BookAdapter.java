@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static android.view.KeyCharacterMap.load;
+
 public class BookAdapter extends ArrayAdapter<Book> {
 
     private static final String AUTHOR_SEPARATOR = ", ";
@@ -33,7 +35,8 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         ImageView coverImageView = (ImageView) listItemView.findViewById(R.id.iv_book_cover);
         Picasso.with(getContext())
-                .load(R.drawable.placeholder_book_cover)
+                .load(currentBook.getCoverImagePath())
+                .placeholder(R.drawable.placeholder_book_cover)
                 .into(coverImageView);
 
         TextView bookTitleTextView = (TextView) listItemView.findViewById(R.id.tv_title_of_book);

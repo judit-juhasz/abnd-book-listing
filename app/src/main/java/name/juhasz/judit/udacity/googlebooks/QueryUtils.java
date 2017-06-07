@@ -29,6 +29,8 @@ public final class QueryUtils {
     private static final String JSON_KEY_BOOK_INFO = "volumeInfo";
     private static final String JSON_KEY_BOOK_TITLE = "title";
     private static final String JSON_KEY_BOOK_AUTHORS = "authors";
+    private static final String JSON_KEY_BOOK_IMAGES = "imageLinks";
+    private static final String JSON_KEY_BOOK_THUMBNAIL_PATH = "thumbnail";
 
     private static final String URL_ENCODING = "utf-8";
 
@@ -149,7 +151,13 @@ public final class QueryUtils {
                 JSONArray authorArray = volumeInfo.optJSONArray(JSON_KEY_BOOK_AUTHORS);
                 ArrayList<String> authors = extractAuthorsFromJsonArray(context, authorArray);
 
-                Book book = new Book(title, authors);
+                String coverImagePath = null;
+                JSONObject bookImages = volumeInfo.optJSONObject(JSON_KEY_BOOK_IMAGES);
+                if (null != bookImages) {
+                    coverImagePath = bookImages.optString(JSON_KEY_BOOK_THUMBNAIL_PATH);
+                }
+                
+                Book book = new Book(title, authors, coverImagePath);
                 books.add(book);
             }
         } catch (JSONException e) {
